@@ -6,17 +6,19 @@ var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{
   accessToken: API_KEY
 });
 
-// Initialize all of the LayerGroups we'll be using
-var layers = {
-  COMING_SOON: new L.LayerGroup(),
-  EMPTY: new L.LayerGroup(),
-  LOW: new L.LayerGroup(),
-  NORMAL: new L.LayerGroup(),
-  OUT_OF_ORDER: new L.LayerGroup()
-};
+// this section creates the popups' size according to the magnitude
 
-// This part gets the marker's color based on the magnitude of the earthquake
-function color_marker(mag) {
+function createFeatures(earthquakesData) {
+    function features(feature, layer) {
+        layer.bindPopup("<h3>" + feature.properties.place +
+        "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
+    }
+    function radiusMagnitude(radius) {
+        return radius*4000;
+    }
+    // This part gets the marker's color based on the magnitude of the earthquake
+    // Turned out kind of weird
+    function color_marker(mag) {
     if (mag >= 5) {
         return "rgb(240, 107, 107)" 
     } else {
@@ -38,7 +40,11 @@ function color_marker(mag) {
             }
         }
     }
-};
+    };
+
+}
+
+
 
 // Create the map with our layers
 var map = L.map("map", {
@@ -56,4 +62,10 @@ var map = L.map("map", {
 // This part changes the layer's color (add the 'lightmap' tile layer to the map)
 lightmap.addTo(map);
 
+// Query the url
+var url = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson'
+d3.json(url, function(data) {
 
+    createFeatures(data.features);
+    console.log(data.features)
+  });
