@@ -56,3 +56,4 @@ var map = L.map("map", {
 // This part changes the layer's color (add the 'lightmap' tile layer to the map)
 lightmap.addTo(map);
 
+
