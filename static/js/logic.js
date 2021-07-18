@@ -82,5 +82,24 @@ function markerColor(mag) {
       var earthquakes = response.features;
       var earthquakeMarkers = []
   
-      
+      for (var index = 0; index < earthquakes.length; index++) {
+          var earthquake = earthquakes[index];
+  
+          var circle_markers = L.circleMarker([ earthquake.geometry.coordinates[1], earthquake.geometry.coordinates[0] ], {
+                  radius: earthquake.properties.mag * 2,
+                  fillColor: markerColor(earthquake.properties.mag),
+                  fillOpacity: 0.75,
+                  stroke: false
+              }
+              ).bindPopup("<h4>" + earthquake.properties.place + "</h4><hr><p>" + new Date (earthquake.properties.time) + "</p>" + "<p><b>Magnitude: " +  earthquake.properties.mag + "<b></p>");
+  
+          earthquakeMarkers.push(circle_markers);
+      }
+      createMap(L.layerGroup(earthquakeMarkers));
+  
+  }
+  
+  
+  // Hard a hard time making d3 a funtion, so I just made everything first before running it with the json.
+  d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson", Markers);
 
