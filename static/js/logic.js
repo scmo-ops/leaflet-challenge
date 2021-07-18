@@ -6,66 +6,55 @@ var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{
   accessToken: API_KEY
 });
 
-// this section creates the popups' size according to the magnitude
+// Create the map with our layers
+var map = L.map("map", {
+    center: [37.7750, -120.5050],
+    zoom: 5
+});
 
-function createFeatures(earthquakesData) {
-    function features(feature, layer) {
-        layer.bindPopup("<h3>" + feature.properties.place +
-        "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
+// This section querys the url
+var url='https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson';
+d3.json(url, function(earthquakeData) {
+    function circleColor(color) {
+        return {
+            opacity: 1,
+            fillOpacity: 1,
+            fillColor: getColor(color.properties.mag),
+            color: "#000000",
+            radius: getRadius(color.properties.mag),
+            stroke: true,
+            weight: 0.5 
+        };
     }
-    function radiusMagnitude(radius) {
-        return radius*4000;
-    }
-    // This part gets the marker's color based on the magnitude of the earthquake
-    // Turned out kind of weird
+
     function color_marker(mag) {
-    if (mag >= 5) {
-        return "rgb(240, 107, 107)" 
-    } else {
-        if (mag > 4) {
-            return "rgb(240, 167, 107)"
+        if (mag >= 5) {
+            return "rgb(240, 107, 107)" 
         } else {
-            if (mag > 3) {
-                return "rgb(243, 186, 77)"
+            if (mag > 4) {
+                return "rgb(240, 167, 107)"
             } else {
-                if (mag > 2) {
-                    return "rgb(243, 219, 77)"
+                if (mag > 3) {
+                    return "rgb(243, 186, 77)"
                 } else {
-                    if (mag > 1) {
-                        return "rgb(226, 243, 77)"
+                    if (mag > 2) {
+                        return "rgb(243, 219, 77)"
                     } else {
-                        return "rgb(183, 243, 77)"
+                        if (mag > 1) {
+                            return "rgb(226, 243, 77)"
+                        } else {
+                            return "rgb(183, 243, 77)"
+                        }
                     }
                 }
             }
         }
-    }
-    };
-
+        };
+        function radiusMagnitude(radius) {
+            if (magnitude ===0 ) {
+                return1;
+            }
+            return radius*4;
+        }
 }
 
-
-
-// Create the map with our layers
-var map = L.map("map", {
-  center: [40.73, -74.0059],
-  zoom: 12,
-  layers: [
-    layers.COMING_SOON,
-    layers.EMPTY,
-    layers.LOW,
-    layers.NORMAL,
-    layers.OUT_OF_ORDER
-  ]
-});
-
-// This part changes the layer's color (add the 'lightmap' tile layer to the map)
-lightmap.addTo(map);
-
-// Query the url
-var url = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson'
-d3.json(url, function(data) {
-
-    createFeatures(data.features);
-    console.log(data.features)
-  });
