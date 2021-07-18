@@ -13,4 +13,4 @@ For the time being I just made it to level 1 of the challenge. However; I am pla
 
 Screen Shot of current result:
 
-![2-Basic-map](Images/2-Basic-map.png)
+![6-Time_Keeps_On_Ticking](Images/6-Time_Keeps_On_Ticking.gif)
