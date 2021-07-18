@@ -1,4 +1,4 @@
-// Create the tile layer that will be the background of our map
+// This section creates a tile layer that will be the background of the map
 var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
   attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
   maxZoom: 18,
@@ -15,6 +15,7 @@ var layers = {
   OUT_OF_ORDER: new L.LayerGroup()
 };
 
+// This part gets the color based on the magnitude of the earthquake
 // Create the map with our layers
 var map = L.map("map-id", {
   center: [40.73, -74.0059],
@@ -28,7 +29,7 @@ var map = L.map("map-id", {
   ]
 });
 
-// Add our 'lightmap' tile layer to the map
+// This part cganges the layer's color (add the 'lightmap' tile layer to the map)
 lightmap.addTo(map);
 
 // Create an overlays object to add to the layer control
@@ -90,8 +91,8 @@ var icons = {
   })
 };
 
-// Perform an API call to the Citi Bike Station Information endpoint
-d3.json("https://gbfs.citibikenyc.com/gbfs/en/station_information.json").then(function(infoRes) {
+// This part performs an API call to the USGS GeoJSON Feed Information endpoint
+d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson").then(function(infoRes) {
 
   // When the first API call is complete, perform another call to the Citi Bike Station Status endpoint
   d3.json("https://gbfs.citibikenyc.com/gbfs/en/station_status.json").then(function(statusRes) {
