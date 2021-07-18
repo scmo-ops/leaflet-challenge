@@ -54,5 +54,27 @@ function markerColor(mag) {
       collapsed: false
     }).addTo(myMap);
   
-
+  
+    // These is the legend for the map
+    var legend = L.control({position: 'bottomright'});
+  
+    legend.onAdd = () => {
+      var div = L.DomUtil.create('div', 'info legend');
+      var magnitudesForMap = [4.75, 5.0, 5.25, 5.5, 5.75];
+  
+      magnitudesForMap.forEach(Data_m => {
+        var range = `${Data_m} - ${Data_m+0.25}`;
+        if (Data_m >= 5.75) {range = `${Data_m}+`}
+        var html = `<div class="legend-item">
+              <div style="height: 25px; width: 25px; background-color:${markerColor(Data_m)}"> </div>
+              <div class=legend-text>Magnitude:- <strong>${range}</strong></div>
+          </div>`
+        div.innerHTML += html
+      });
+      return div;
+    };
+    legend.addTo(myMap);
+  }
+  
+ 
 
