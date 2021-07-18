@@ -76,5 +76,11 @@ function markerColor(mag) {
     legend.addTo(myMap);
   }
   
- 
+  // This part creates the markers.
+  function Markers(response) {
+  
+      var earthquakes = response.features;
+      var earthquakeMarkers = []
+  
+      
 
